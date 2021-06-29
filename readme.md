@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.com/Muzihuzi/dimibob-parser.svg?branch=main)](https://travis-ci.com/Muzihuzi/dimibob-parser)
 # @dimigo/dimibob-parser
 
 > dimibob excel parser
