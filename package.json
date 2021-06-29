@@ -1,6 +1,6 @@
 {
   "name": "@dimigo/dimibob-parser",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "dimibob excel parser",
   "main": "index.js",
   "dependencies": {
