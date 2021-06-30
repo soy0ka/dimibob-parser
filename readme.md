@@ -12,7 +12,7 @@
 # NPM
 $ npm install @dimigo/dimibob-parser
 # yarn
-$ npm install @dimigo/dimibob-parser
+$ yarn add @dimigo/dimibob-parser
 ```
 
 ### Examples
