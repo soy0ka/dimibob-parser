@@ -1,43 +1,40 @@
+const template = require('./result')
 const parser = require('@dimigo/excel')
+
+const exceptions = ['2종과일', '2종시리얼']
 const day = ['mon', 'tue', 'wed', 'thurs', 'fri', 'sat', 'sun']
-// 이 코드는 안보는게 좋아요... 하드코딩의 결정체거든요 하하하
+const type = (index) =>
+  index < 22
+    ? 'breakfast'
+    : index < 33 ? 'lunch' : 'dinner'
 
-async function excel(path) {
-    const data = await parser.parseXlsx(path)
-    const result = require('./result')
-        for(let j=0;j<10;j++){
-            let i = 0
-            for(const meal of data[4+j]){
-                if(!meal.includes('조 식') && !meal.includes('중 식') && !meal.includes('석 식') && meal!=='' && meal!=='*' && meal!=='<국없는날>'){
-                    result[day[i]].breakfast.push(meal.replace(/\d+/g, '').replaceAll('\(','').replaceAll('\)','').replaceAll('.','').replaceAll('ㆍ',''))
-                    if(result[day[i]].breakfast.indexOf('종과일') != -1) result[day[i]].breakfast[result[day[i]].breakfast.indexOf('종과일')] = "2종과일"
-                    if(result[day[i]].breakfast.indexOf('종시리얼') != -1) result[day[i]].breakfast[result[day[i]].breakfast.indexOf('종시리얼')] = "2종시리얼"
-                    i++
-                }
-            }
-        }
-        for(let j=0;j<6;j++){
-            let i = 0
-            for(const meal of data[23+j]){
-                if(!meal.includes('조 식') && !meal.includes('중 식') && !meal.includes('석 식') && meal!=='' && meal!=='*' && meal!=='<국없는날>'){
-                    result[day[i]].lunch.push(meal.replace(/\d+/g, '').replaceAll('\(','').replaceAll('\)','').replaceAll('.','').replaceAll('ㆍ',''))
-                    i++
-                }
-            }
-        }
-        for(let j=0;j<7;j++){
-            let i = 0
-            for(const meal of data[34+j]){
-                if(!meal.includes('조 식') && !meal.includes('중 식') && !meal.includes('석 식') && meal!=='' && meal!=='*' && meal!=='<국없는날>'){
-                    result[day[i]].dinner.push(meal.replace(/\d+/g, '').replaceAll('\(','').replaceAll('\)','').replaceAll('.','').replaceAll('ㆍ',''))
-                    i++
-                }
-            }
-        }
-        return result
+async function parse (path) {
+  const datas = await parser.parseXlsx(path)
+  const result = Object.assign({}, template)
+
+  for (const index in datas) {
+    if (index < +4 || index > 40) continue
+    if (index < 22 && index > 14) continue
+    if (index < 33 && index > 29) continue
+
+    const dayDatas = datas[index]
+
+    for (const date in dayDatas) {
+      const dayData = dayDatas[date]
+
+      if (!dayData) continue
+      if (/\*$|조 식|중 식|석 식|<국없는날>/g.test(dayData)) continue
+
+      const dayParsed =
+        !exceptions.find((v) => dayData.includes(v))
+          ? dayData.replace(/\d+|\(|\)|\.|ㆍ/g, '')
+          : dayData
+
+      result[day[date - 1]][type(index)].push(dayParsed)
+    }
+  }
+
+  return result
 }
 
-
-module.exports={
-    parse:excel
-}
+module.exports = { parse }
