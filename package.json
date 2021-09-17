@@ -4,7 +4,7 @@
   "description": "dimibob excel parser",
   "main": "index.js",
   "dependencies": {
-    "@dimigo/excel": "^0.0.1",
+    "@dimigo/excel": "^1.0.0",
     "eslint": "^7.29.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.23.4",
