@@ -1,0 +1,21 @@
+{
+  "name": "@dimigo/dimibob-parser",
+  "version": "1.2.0",
+  "description": "dimibob excel parser",
+  "main": "index.js",
+  "dependencies": {
+    "@dimigo/excel": "^1.0.5"
+  },
+  "devDependencies": {
+    "eslint": "^7.29.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dyij",
+  "license": "MIT"
+}
