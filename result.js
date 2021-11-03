@@ -1,4 +1,8 @@
 module.exports = {
+  date:{
+    string:'',
+    timestamp:0
+  },
   mon: {
     breakfast: [],
     lunch: [],
