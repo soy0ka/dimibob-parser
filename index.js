@@ -2,6 +2,7 @@ const parser = require('@dimigo/excel')
 const template = require('./result')
 const exceptions = ['2종과일', '2종시리얼']
 const day = ['mon', 'tue', 'wed', 'thurs', 'fri', 'sat', 'sun']
+const VaildDateRegex = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/
 const type = (index) =>
   index < 22
     ? 'breakfast'
@@ -14,9 +15,13 @@ async function parse (pathOrBuffer) {
     const sheet = excel.get('sheet1')
     const result = Object.assign({}, template)
     const datas = sheet.toArray()
-    const date = datas[2][0].replace('년','-')+datas[3][1].replace('월','-').replace('일','')
-    result.date.string = date
-    result.date.timestamp = Date.parse(date)
+    const year = datas[2][0].replace('년','')
+    const dates = []
+    for(const date of datas[3].slice(1)){
+      if (!date) continue
+      const temp = year + '-' + date.replace('월','-').replace('일','')
+      dates.push(temp)
+    }
     for (const index in datas) {
       if (index < +4 || index > 40) continue
       if (index < 22 && index > 14) continue
@@ -26,15 +31,15 @@ async function parse (pathOrBuffer) {
   
       for (const date in dayDatas) {
         const dayData = dayDatas[date]
-  
         if (!dayData) continue
         if (/\*$|조 식|중 식|석 식|<국없는날>/g.test(dayData)) continue
         const dayParsed =
           !exceptions.find((v) => dayData.includes(v))
             ? dayData.replace(/\d+|\(|\)|\.|ㆍ/g, '')
             : dayData
-  
+
         result[day[date - 1]][type(index)].push(dayParsed)
+        result[day[date - 1]]['date'] = (dates[date - 1])
       }
     }
   

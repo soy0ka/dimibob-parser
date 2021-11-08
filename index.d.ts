@@ -1,15 +1,11 @@
 interface DayResult {
+  date: string;
   breakfast: string[]
   lunch: string[]
   dinner: string[]
 }
-interface date{
- string: string
- timestamp: number
-}
 
 interface Result {
-  date:date
   mon: DayResult
   tue: DayResult
   wed: DayResult
