@@ -27,5 +27,5 @@ parser.parse('./dimibob.xlsx').then((bob)=>{
 
 ### Author
 
-**[Seoyeon Park](https://github.com/rihayoru)**
+**[Soyoka](https://github.com/soyoka)**
 
